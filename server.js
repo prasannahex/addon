@@ -2,7 +2,7 @@ const { Client } = require('pg');
 
 // Northflank automatically provides DATABASE_URL or POSTGRES_URI 
 // once you link your PostgreSQL Add-on to your service.
-const dbConnectionString = process.env.DATABASE_URL || process.env.POSTGRES_URI;
+const dbConnectionString = process.env.DATABASE_URL || process.env.POSTGRES_URI || process.env.NF_GENAI_POSTGRESQL_POSTGRES_URI;;
 
 if (!dbConnectionString) {
   console.error("❌ Error: Add-on environment variable is missing!");
