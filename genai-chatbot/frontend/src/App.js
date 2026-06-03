@@ -30,6 +30,7 @@ function App() {
       console.error(error);
 
     }
+
   };
 
   const loadMessages = async (id) => {
@@ -49,6 +50,15 @@ function App() {
       console.error(error);
 
     }
+
+  };
+
+  const newChat = () => {
+
+    setConversationId(null);
+
+    setMessages([]);
+
   };
 
   const sendMessage = async (message) => {
@@ -65,7 +75,7 @@ function App() {
 
       }
 
-      const response = await axios.post(
+      await axios.post(
         "/chat",
         {
           conversation_id: currentConversationId,
@@ -82,6 +92,7 @@ function App() {
       console.error(error);
 
     }
+
   };
 
   return (
@@ -97,6 +108,7 @@ function App() {
         <Sidebar
           conversations={conversations}
           onSelect={loadMessages}
+          onNewChat={newChat}
         />
 
         <div className="chat-section">
