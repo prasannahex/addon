@@ -1,9 +1,91 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+
+import Sidebar from "./components/Sidebar";
+import ChatWindow from "./components/ChatWindow";
+import PromptBox from "./components/PromptBox";
+
 import "./App.css";
 
 function App() {
 
+  const [conversations, setConversations] = useState([]);
+  const [messages, setMessages] = useState([]);
+  const [conversationId, setConversationId] = useState(null);
+
+  useEffect(() => {
+    loadConversations();
+  }, []);
+
+  const loadConversations = async () => {
+
+    try {
+
+      const response = await axios.get("/conversations");
+
+      setConversations(response.data);
+
+    } catch (error) {
+
+      console.error(error);
+
+    }
+  };
+
+  const loadMessages = async (id) => {
+
+    try {
+
+      const response = await axios.get(
+        `/conversation/${id}`
+      );
+
+      setConversationId(id);
+
+      setMessages(response.data);
+
+    } catch (error) {
+
+      console.error(error);
+
+    }
+  };
+
+  const sendMessage = async (message) => {
+
+    try {
+
+      let currentConversationId = conversationId;
+
+      if (!currentConversationId) {
+
+        currentConversationId = crypto.randomUUID();
+
+        setConversationId(currentConversationId);
+
+      }
+
+      const response = await axios.post(
+        "/chat",
+        {
+          conversation_id: currentConversationId,
+          message: message
+        }
+      );
+
+      await loadMessages(currentConversationId);
+
+      await loadConversations();
+
+    } catch (error) {
+
+      console.error(error);
+
+    }
+  };
+
   return (
+
     <div className="app">
 
       <div className="header">
@@ -12,52 +94,27 @@ function App() {
 
       <div className="body">
 
-        <div className="sidebar">
-
-          <h3>Chat History</h3>
-
-          <div className="chat-item">
-            PostgreSQL Discussion
-          </div>
-
-          <div className="chat-item">
-            Azure OpenAI Test
-          </div>
-
-        </div>
+        <Sidebar
+          conversations={conversations}
+          onSelect={loadMessages}
+        />
 
         <div className="chat-section">
 
-          <div className="chat-window">
+          <ChatWindow
+            messages={messages}
+          />
 
-            <div className="user-message">
-              What is PostgreSQL?
-            </div>
-
-            <div className="assistant-message">
-              PostgreSQL is an open-source relational database...
-            </div>
-
-          </div>
-
-          <div className="prompt-box">
-
-            <input
-              type="text"
-              placeholder="Ask me anything..."
-            />
-
-            <button>
-              Send
-            </button>
-
-          </div>
+          <PromptBox
+            onSend={sendMessage}
+          />
 
         </div>
 
       </div>
 
     </div>
+
   );
 }
 
