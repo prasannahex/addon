@@ -3,6 +3,7 @@ import React from "react";
 function ChatWindow({ messages }) {
 
   return (
+
     <div className="chat-window">
 
       {
@@ -23,6 +24,7 @@ function ChatWindow({ messages }) {
       }
 
     </div>
+
   );
 }
 
