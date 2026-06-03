@@ -1,21 +1,13 @@
-# Step 1: Choose a lightweight base image
-FROM node:20-alpine
+FROM python:3.12-slim
 
-# Step 2: Set the internal working directory
-WORKDIR /usr/src/app
+WORKDIR /app
 
-# Step 3: Copy dependency definitions first to utilize caching
-COPY package*.json ./
+COPY app/requirements.txt .
 
-# Step 4: Install production dependencies only
-RUN npm install --omit=dev
+RUN pip install --no-cache-dir -r requirements.txt
 
-# Step 5: Copy the rest of your application code
-COPY . .
+COPY app/ .
 
-# Step 6: Inform Northflank which port your service listens on internally
-EXPOSE 3000
+EXPOSE 8080
 
-# Step 7: Command to start the application
-# At this point, Northflank automatically boots the container with injected variables
-CMD ["node", "server.js"]
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8080"]
