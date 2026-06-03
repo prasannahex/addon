@@ -2,7 +2,7 @@ import os
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
-DATABASE_URL = os.getenv("POSTGRES_URI")
+DATABASE_URL = os.getenv("NF_GENAI_POSTGRESQL_POSTGRES_URI")
 
 engine = create_engine(DATABASE_URL)
 
