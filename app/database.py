@@ -4,7 +4,7 @@ from sqlalchemy.orm import sessionmaker
 
 DATABASE_URL = os.getenv("POSTGRES_URI")
 
-engine = create_engine(DATABASE_URL)
+engine = create_engine(DATABASE)
 
 SessionLocal = sessionmaker(
     autocommit=False,
