@@ -1,4 +1,32 @@
+# Git
 .git
-__pycache__
+.gitignore
+
+# Python
+__pycache__/
 *.pyc
+*.pyo
+*.pyd
+*.log
+
+# React
+frontend/node_modules
+frontend/build
+
+# IDE
+.vscode
+.idea
+
+# Mac
+.DS_Store
+
+# Env
 .env
+.env.*
+
+# Docker
+docker-compose.yml
+
+# Misc
+*.tmp
+*.swp
