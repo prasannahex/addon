@@ -4,6 +4,18 @@ function PromptBox({ onSend }) {
 
   const [message, setMessage] = useState("");
 
+  const send = () => {
+
+    if (!message.trim()) {
+      return;
+    }
+
+    onSend(message);
+
+    setMessage("");
+
+  };
+
   return (
 
     <div className="prompt-box">
@@ -12,17 +24,14 @@ function PromptBox({ onSend }) {
         value={message}
         onChange={(e) => setMessage(e.target.value)}
         placeholder="Ask me anything..."
+        onKeyDown={(e) => {
+          if (e.key === "Enter") {
+            send();
+          }
+        }}
       />
 
-      <button
-        onClick={() => {
-
-          onSend(message);
-
-          setMessage("");
-
-        }}
-      >
+      <button onClick={send}>
         Send
       </button>
 
